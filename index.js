@@ -7,7 +7,7 @@
     show(data);
 })()
 
-async function getApi(filterBy, min, max) {
+async function getApiFilter(filterBy, min, max) {
     DeleteRows();
     let gt = filterBy + "_gt";
     let lt = filterBy + "_lt";
@@ -38,7 +38,7 @@ function filterData() {
     let filerBy = document.getElementById("filter-by").value;
     let min = document.getElementById("min").value;
     let max = document.getElementById("max").value;
-    getApi(filerBy, min, max);
+    getApiFilter(filerBy, min, max);
 }
 //filter by name
 function filterByName(){
