@@ -2,67 +2,68 @@
 <html lang="en">
 <head>
     <style>
-        table, th, td {
+        important table, th, td {
             border: 1px solid black;
         }
     </style>
-    <script type = "text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>task1</title>
 </head>
 <body>
-    <div>
-        <label for="filter-by">Filter By</label>
-        <select id="filter-by">
-            <option value="">select...</option>
-            <option value="abv">ABV</option>
-            <option value="ibu">IBU</option>
-        </select>
-        <label for="min">Min</label>
-        <select name="min" id="min">
-            <option value="">select one</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-        <label for="max">Max</label>
-        <select name="max" id="max">
-            <option value="">select one</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-        <button onclick="filterData()">filter</button>
+<div>
+    <label for="filter-by">Filter By</label><br>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <label>ABV</label>
+            <div class="cal-md-2">
+                <input type="radio" class="filter" onclick="filterData()" name="abv" value="0-2.01">0-2
+                <input type="radio" class="filter" onclick="filterData()" name="abv" value="2-4.01">2-4
+                <input type="radio" class="filter" onclick="filterData()" name="abv" value="4-6.01">4-6
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label>IBU</label>
+            <div class="cal-md-2">
+                <input type="radio" class="filter" name="ibu" onclick="filterData()" value="20-40.01">20-40
+                <input type="radio" class="filter" name="ibu" onclick="filterData()" value="40-60.01">40-60
+                <input type="radio" class="filter" name="ibu" onclick="filterData()" value="60-80.01">60-80
+            </div>
+        </div>
+        <!--                <div class="col-md-2">-->
+        <!--                    <button type="button" id="filter" onclick="filterData()" class="btn btn-success" >APPLY</button>-->
+        <!--                </div>-->
+        <div class="col-md-2">
+            <button type="button" onclick="resetFilter()" class="btn btn-danger">Reset</button>
+        </div>
     </div>
+    <!--        <button onclick="filterData()">filter</button>-->
+
     <div>
         <label for="search-by-name">Bear Name</label>
         <input type="search" name="bear-name" value="" onkeyup="filterData()" id="search-by-name">
 
     </div>
-    <table style="border: solid 1px"  id="table_body">
+    <hr>
+    <table id="table_body">
         <thead>
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>tagLine</th>
-                <th>Description</th>
-                <th>abv</th>
-                <th>ibu</th>
-            </tr>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>tagLine</th>
+            <th>Description</th>
+            <th>abv</th>
+            <th>ibu</th>
+        </tr>
         </thead>
         <tbody id="table_body1">
 
         </tbody>
     </table>
-<script>
-
-</script>
+</div>
 </body>
 
 </html>

@@ -1,50 +1,90 @@
-(async function getApi() {
+async function getApi() {
     // Storing response
-    const response = await fetch(`https://api.punkapi.com/v2/beers`);
+    const response = await (await fetch(`https://api.punkapi.com/v2/beers`)).json();
     // Storing data in form of JSON
-    let data = await response.json();
-    console.log(data);
-    show(data);
-})()
-
-async function getApiFilter(filterBy, min, max,searchBy) {
-    DeleteRows();
-    let gt = filterBy + "_gt";
-    let lt = filterBy + "_lt";
-    let beerName="beer_name";
-    if(searchBy==""){
-        beerName="bear_name";
-    }
-    min = parseInt(min);
-    max = parseInt(max);
-    const response = await fetch(`https://api.punkapi.com/v2/beers?${gt}=${min}&${lt}=${max}&${beerName}=${searchBy}`);
-    let data = await response.json();
-    console.log(data);
-    show(data);
+    // let data = response.json();
+    console.log("data",response);
+    showRecord(response);
 }
-function show(data) {
-    let tab = "";
+
+getApi();
+
+/**
+ * abvLt
+ * @param abv_lt
+ * @param abv_gt
+ * @param ibu_lt
+ * @param ibu_gt
+ * @param searchBy
+ * @returns {Promise<void>}
+ */
+// todo: use a variable baseUrl and add the parameters according to it. //done
+// todo: rename variables //done
+async function getApiFilter(abvLt, abvGt, ibuLt, ibuGt, searchBy = "") {
+    await DeleteRows();
+    let url=`https://api.punkapi.com/v2/beers?`
+    if(searchBy){
+        url+=`beer_name=${searchBy}&`;
+    }
+    url+=`abv_gt=${abvLt}&abv_lt=${abvGt}&ibu_lt=${ibuGt}&ibu_gt=${ibuLt}`;
+    const response = await fetch(url);
+    let data = await response.json();
+    console.log(data);
+    showRecord(data);
+}
+
+function showRecord(data) {
+    let tableRow = "";
     // Loop to access all rows
     let tableRef = document.getElementById('table_body')
         .getElementsByTagName('tbody')[0];
-    for (let r of data) {
-        tab = `<tr> 
-                <td>${r.id} </td>
-                <td>${r.name}</td>
-                <td>${r.tagline}</td> 
-                <td>${r.description}</td>          
-                <td>${r.abv}</td>          
-                <td>${r.ibu}</td>          
+    // todo: rename "r" // done
+    for (let row of data) {
+        tableRow = `<tr> 
+                <td>${row.id} </td>
+                <td>${row.name}</td>
+                <td>${row.tagline}</td> 
+                <td>${row.description}</td>          
+                <td>${row.abv}</td>          
+                <td>${row.ibu}</td>          
             </tr>`;
-        tableRef.insertRow().innerHTML = tab;
+        tableRef.insertRow().innerHTML = tableRow;
     }
 }
-function filterData() {
-    let filerBy = document.getElementById("filter-by").value;
-    let min = document.getElementById("min").value;
-    let max = document.getElementById("max").value;
+
+async function filterData() {
+    // let abv = document.getElementsByName("abv").value;
+    let abv = document.querySelector('input[name="abv"]:checked');
+    // todo: if (abv)  // done
+    if (abv) {
+        abv = abv.value;
+    } else {
+        abv = "0-100";
+    }
+    let abvArray = abv.split("-");
+    let ibu = document.querySelector('input[name="ibu"]:checked');
+    if (ibu) {
+        ibu = ibu.value;
+    } else {
+        ibu = "0-100";
+    }
+    let ibuArray = ibu.split("-");
     let searchBy = document.getElementById("search-by-name").value;
-    getApiFilter(filerBy, min, max,searchBy);
+    await getApiFilter(abvArray[0], abvArray[1], ibuArray[0], ibuArray[1], searchBy);
+}
+
+async function resetFilter() {
+    let abv = document.querySelector('input[name="abv"]:checked');
+    if (abv) {
+        abv.checked = false;
+    }
+    let ibu = document.querySelector('input[name="ibu"]:checked');
+    if (abv){
+        ibu.checked = false;
+    }
+    let searchBy = document.getElementById("search-by-name").value = "";
+    await DeleteRows();
+    await getApi();
 }
 
 
@@ -58,12 +98,13 @@ function filterData() {
 
 //table row removing function
 */
-function DeleteRows() {
+ async function DeleteRows() {
     let rowCount = table_body.rows.length;
-    for (let i = rowCount - 1; i > 0; i--){
+    for (let i = rowCount - 1; i > 0; i--) {
         table_body.deleteRow(i);
     }
 }
+
 /*
 //sort by
 
