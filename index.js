@@ -9,30 +9,24 @@ async function getApi() {
 
 getApi();
 
-/**
- * abvLt
- * @param abv_lt
- * @param abv_gt
- * @param ibu_lt
- * @param ibu_gt
- * @param searchBy
- * @returns {Promise<void>}
- */
+
 // todo: use a variable baseUrl and add the parameters according to it. //done
 // todo: rename variables //done
-async function getApiFilter(abvLt, abvGt, ibuLt, ibuGt, searchBy = "") {
+// todo: use a common function to fetch records.
+async function getApiFilter(abvLt, abvGt, ibuLt, ibuGt, searchBy) {
     await DeleteRows();
-    let url=`https://api.punkapi.com/v2/beers?`
+    let url=`https://api.punkapi.com/v2/beers?`;
     if(searchBy){
         url+=`beer_name=${searchBy}&`;
     }
     url+=`abv_gt=${abvLt}&abv_lt=${abvGt}&ibu_lt=${ibuGt}&ibu_gt=${ibuLt}`;
+    // todo: can convert in single line.
     const response = await fetch(url);
     let data = await response.json();
     console.log(data);
     showRecord(data);
 }
-
+// todo: rename data to rows
 function showRecord(data) {
     let tableRow = "";
     // Loop to access all rows
@@ -56,6 +50,7 @@ async function filterData() {
     // let abv = document.getElementsByName("abv").value;
     let abv = document.querySelector('input[name="abv"]:checked');
     // todo: if (abv)  // done
+    // todo: remove hard coded values.
     if (abv) {
         abv = abv.value;
     } else {
